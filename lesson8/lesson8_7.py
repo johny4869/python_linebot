@@ -26,7 +26,7 @@ with gr.Blocks() as demo:
         elif style == "專業":
             style = "請使用專業的風格\n"
         
-        response = client.models.generate_content(
+        response = Client.models.generate_content(
             model="gemini-2.5-flash",
             config= types.GenerateContentConfig(
                 system_instruction=f"""
