@@ -5,6 +5,7 @@ import os
 
 load_dotenv() #載入env
 client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
+print(os.environ.get("GEMINI_API_KEY"))
 app = Flask(__name__)
 
 @app.route("/")
