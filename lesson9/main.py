@@ -1,5 +1,10 @@
-from flask import Flask,render_template_string
+from flask import Flask, jsonify,render_template_string, request
+from google import genai
+from dotenv import load_dotenv # type: ignore #處理環境變數
+import os
 
+load_dotenv() #載入env
+client = genai.Client(api_key=os.environ.get("GEMINI_API_KEY"))
 app = Flask(__name__)
 
 @app.route("/")
@@ -58,3 +63,28 @@ def index():
     </html>
     '''
     return render_template_string(html)
+
+@app.route("/chat", methods=["POST"])
+def chat():
+    data = request.get_json()
+    question = data.get("question", "").strip()
+    if not question:
+        return jsonify({"error": "請輸入您的問題。"}), 400
+    try:
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=f"{question},回應請輸出成為html格式,請記得您的名字是`致理小助手`"
+        )
+        html_format = response.text.replace("、、、html", "").replace("、、、", "")
+        return jsonify({"text": html_format})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    # 在這裡處理問題並生成回應
+    response = generate_response(question)
+    return jsonify({"text": response})
+
+def generate_response(question):
+    # 這裡可以根據問題生成回應，目前回傳固定文字
+    if not question:
+        return "請輸入您的問題。"
+    return f"您問的是：{question}（這是範例回應）"
