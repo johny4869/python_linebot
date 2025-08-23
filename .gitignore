@@ -1,3 +1,5 @@
-.env
+#虛擬環境所有變數不行上傳
+.env 
+#demo
 .gradio
-_ptcache_
+_ptcache_  

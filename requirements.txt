@@ -1,3 +1,4 @@
 google-genai
-python-dotenv
+python-dotenv #模擬虛擬環境
 ipywidgets
+flask
